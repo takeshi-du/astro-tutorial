@@ -1,16 +1,18 @@
 ---
-
+// index.astro の既存のコード...
 ---
-
-<html lang="en">
-	<head>
+<html lang="ja">
+<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+    <title>トップページ</title>
+</head>
+<body>
+    <h1>ようこそ！</h1>
+    <p>これはAstroのトップページです。</p>
+
+    {/* ↓ このリンクを追加 */}
+    <a href="/about">Aboutページへ</a>
+
+    </body>
 </html>

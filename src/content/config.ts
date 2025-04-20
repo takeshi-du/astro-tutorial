@@ -9,6 +9,7 @@ const blogCollection = defineCollection({
     pubDate: z.coerce.date(), // 文字列を日付型に変換
     description: z.string().optional(), // オプショナルな項目
     tags: z.array(z.string()).optional(), // 文字列の配列 (オプショナル)
+    url: z.string().optional() // ← 追加: カスタムURL用のフィールド (オプショナル)
   }),
 });
 

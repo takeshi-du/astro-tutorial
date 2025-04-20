@@ -1,0 +1,31 @@
+---
+// src/pages/blog/[slug].astro
+import { getCollection, getEntry } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro'; // 例: 基本レイアウト
+
+// getStaticPaths: Astroにどのページを生成するか指示する関数
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug }, // URLの[slug]部分に使う値
+    props: { post }, // このページのコンポーネントに渡すデータ
+  }));
+}
+
+// getStaticPathsから渡された記事データを受け取る
+const { post } = Astro.props;
+// Markdown本文をレンダリングするためのコンポーネントを取得
+const { Content } = await post.render();
+---
+<BlogPostLayout title={post.data.title}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <p>公開日: {post.data.pubDate.toLocaleDateString()}</p>
+    {post.data.tags && (
+      <p>タグ: {post.data.tags.join(', ')}</p>
+    )}
+    <hr />
+    {/* Markdown本文のレンダリング */}
+    <Content />
+  </article>
+</BlogPostLayout>

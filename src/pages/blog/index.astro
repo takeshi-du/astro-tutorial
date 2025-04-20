@@ -1,0 +1,23 @@
+---
+// src/pages/blog/index.astro
+import { getCollection } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro'; // 例: 基本レイアウト
+
+// 'blog'コレクションの記事をすべて取得 (pubDateで降順ソート)
+const posts = await getCollection('blog', ({ data }) => {
+  return data.pubDate; // Sort by pubDate in descending order
+});
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BlogPostLayout title="ブログ一覧">
+  <h1>ブログ記事一覧</h1>
+  <ul>
+    {posts.map((post) => (
+      <li>
+        <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+        <p>公開日: {post.data.pubDate.toLocaleDateString()}</p>
+        {post.data.description && <p>{post.data.description}</p>}
+      </li>
+    ))}
+  </ul>
+</BlogPostLayout>

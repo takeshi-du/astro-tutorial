@@ -2,6 +2,7 @@
 // src/pages/[...slug].astro (新規作成、src/pages/blog/[id].astro は削除)
 import { getCollection, getEntry } from 'astro:content';
 import BlogPostLayout from '../layouts/BlogPostLayout.astro'; // レイアウトへのパスが変わることに注意
+import { Image } from 'astro:assets'; // ← Imageコンポーネントをインポート
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -33,6 +34,22 @@ const { Content } = await post.render();
 <BlogPostLayout title={post.data.title}>
   <article>
     <h1>{post.data.title}</h1>
+
+    {/* ↓ アイキャッチ画像を表示 */}
+    {post.data.featureImage && post.data.featureImageAlt && (
+      <Image
+        src={post.data.featureImage}
+        alt={post.data.featureImageAlt}
+        width={720}  {/* 表示したい幅を指定 */}
+        aspectRatio="16:9" {/* アスペクト比を指定すると高さは自動計算されることが多い */}
+        format="webp" {/* 最適なフォーマットを指定 (任意) */}
+        quality={80} {/* 画質を指定 (任意) */}
+        loading="lazy" {/* 遅延読み込み (任意) */}
+        decoding="async" {/* 非同期デコード (任意) */}
+      />
+    )}
+    {/* ↑ ここまで */}
+
     <p>公開日: {post.data.pubDate.toLocaleDateString()}</p>
     {post.data.tags && (
       <p>タグ: {post.data.tags.join(', ')}</p>

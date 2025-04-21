@@ -2,6 +2,7 @@
 // src/pages/blog/[...page].astro
 import { getCollection } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro'; // 適切なレイアウトを指定
+import { getPostUrl } from '../../utils/url';
 
 export async function getStaticPaths({ paginate }) {
   // 1. 'blog'コレクションの記事をすべて取得
@@ -19,14 +20,6 @@ export async function getStaticPaths({ paginate }) {
 
 // paginateから渡された現在のページ情報を受け取る
 const { page } = Astro.props;
-
-// 個別記事ページへのURLを生成するヘルパー関数 (他ページで使っているものを流用)
-function getPostUrl(post) {
-  if (post.data.url) {
-    return `/${post.data.url}/`;
-  }
-  return `/blog/${post.slug}/`;
-}
 ---
 <BlogPostLayout title={`ブログ記事一覧 - ${page.currentPage}ページ目`}>
   <h1>ブログ記事一覧</h1>

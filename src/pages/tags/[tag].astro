@@ -3,6 +3,7 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro'; // 適切なレイアウトを指定
+import { getPostUrl } from '../../utils/url';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
@@ -37,14 +38,7 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 // 記事を日付順にソート (任意)
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// URLを決定するヘルパー関数 (個別記事ページへのリンク用、前の手順から流用)
-function getPostUrl(post) {
-  if (post.data.url) {
-    return `/${post.data.url}/`;
-  }
-  return `/blog/${post.slug}/`;
-}
+const baseUrl = import.meta.env.BASE_URL;
 ---
 <BlogPostLayout title={`タグ: ${tag}`}>
   <h1>タグ: 「{tag}」 の記事一覧</h1>
@@ -61,6 +55,6 @@ function getPostUrl(post) {
   </ul>
 
   <p>
-    <a href="/tags/">すべてのタグ一覧へ</a>
+    <a href={`${baseUrl}/tags/`}>すべてのタグ一覧へ</a>
   </p>
 </BlogPostLayout>

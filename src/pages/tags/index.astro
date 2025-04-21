@@ -11,13 +11,14 @@ allPosts.forEach((post) => {
   });
 });
 const sortedTags = Array.from(uniqueTags).sort(); // アルファベット順にソート (任意)
+const baseUrl = import.meta.env.BASE_URL;
 ---
 <BlogPostLayout title="すべてのタグ">
   <h1>すべてのタグ一覧</h1>
   <ul>
     {sortedTags.map((tag) => (
       <li>
-        <a href={`/tags/${tag}/`}>{tag}</a>
+        <a href={`${baseUrl}/tags/${tag}/`}>{tag}</a>
       </li>
     ))}
   </ul>

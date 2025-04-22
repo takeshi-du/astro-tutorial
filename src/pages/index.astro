@@ -20,7 +20,8 @@ const recentPosts = sortedPosts.slice(0, 5);
 const pageTitle = "ようこそ！";
 ---
 <BaseLayout title={pageTitle}>
-  <h1>{pageTitle}</h1>
+  <h1 class="text-3xl font-bold text-blue-600 mb-4">{pageTitle}</h1>
+  <p class="text-gray-700 leading-relaxed">これはTailwind CSSでスタイルされた段落です。</p>
   <p>このサイトのトップページです。</p>
 
   {/* ↓ ここから新着記事一覧を追加 */}

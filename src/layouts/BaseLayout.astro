@@ -1,9 +1,10 @@
 ---
 // レイアウトコンポーネント (BlogPostLayout.astro)
+import Header from '../components/Header.astro';
+import '../styles/global.css';
+
 // Markdownファイルのフロントマターからデータを受け取る
 const { title } = Astro.props;
-// src/layouts/BaseLayout.astro
-import '../styles/global.css';
 ---
 <!doctype html>
 <html lang="ja">
@@ -14,9 +15,7 @@ import '../styles/global.css';
 		<title>{title ?? 'Astroチュートリアル'}</title>
 	</head>
 	<body>
-		<header>
-      <p>My Astro Blog</p> {/* 例:共通ヘッダー */}
-    </header>
+		<Header />
     <main>
       <slot /> {/* ← ここにMarkdown本文の内容が挿入される */}
     </main>

@@ -1,6 +1,9 @@
+---
+const baseUrl = import.meta.env.BASE_URL;
+---
 <section class="text-center py-10 bg-gray-100">
   <h2 class="text-xl font-semibold mb-4">もっと記事を読む</h2>
-  <a href="/blog/" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded text-lg transition duration-300">
+  <a href={`${baseUrl}/blog/`} class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded text-lg transition duration-300">
     記事一覧へ
   </a>
 </section>

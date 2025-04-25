@@ -1,0 +1,86 @@
+---
+// filepath: /Users/takeshi/dev_products/github/astro-tutorial/src/pages/landing-page.astro
+---
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ランディングページ</title>
+    <!-- style.cssに移植
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+      header {
+        background: #4caf50;
+        color: white;
+        padding: 1rem 0;
+        text-align: center;
+      }
+      .hero {
+        text-align: center;
+        padding: 2rem 1rem;
+        background: #f4f4f4;
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: 2.5rem;
+      }
+      .hero p {
+        margin: 1rem 0;
+        font-size: 1.2rem;
+      }
+      .cta {
+        margin-top: 1.5rem;
+      }
+      .cta a {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+      .cta a:hover {
+        background: #45a049;
+      }
+      footer {
+        text-align: center;
+        padding: 1rem 0;
+        background: #333;
+        color: white;
+        margin-top: 2rem;
+      }
+    </style>
+    -->
+    <link rel="stylesheet" href="/astro-tutorial/lp-assets/css/style.css" />
+    <!-- <script>
+      function handleContactClick(event) {
+        event.preventDefault();
+        console.log("お問い合わせリンクがクリックされました！");
+      }
+    </script> -->
+  </head>
+  <body>
+    <header>
+      <h1>ようこそ！</h1>
+    </header>
+    <section class="hero">
+      <h1>シンプルなランディングページ</h1>
+      <p>このページはAstroを使用して作成されています。</p>
+      <div class="cta">
+        <!-- <a href="#contact" onclick="handleContactClick(event)">お問い合わせ</a> -->
+        <a id="contact-link" href="#contact">お問い合わせ</a>
+      </div>
+    </section>
+    <footer>
+      <p>&copy; 2025 Astro Tutorial. All rights reserved.</p>
+    </footer>
+
+    <script src="/astro-tutorial/lp-assets/js/script.js" is:inline></script>
+  </body>
+</html>

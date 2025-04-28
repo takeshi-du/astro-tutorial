@@ -6,6 +6,8 @@ import Hero from '../components/Hero.astro';
 import RecentPosts from '../components/RecentPosts.astro';
 import CTA from '../components/CTA.astro';
 
+import heroImage from '../assets/images/post1.png'; // OGP用画像をインポート
+
 // 記事取得ロジックは削除 (RecentPosts.astro へ移動)
 
 // トップページ用のデータは残す
@@ -13,7 +15,12 @@ const pageTitle = "My Astro Blog"; // 例: ブログタイトルに変更
 const pageTagline = "Astro と Tailwind CSS で作るブログサイト"; // 例: タグラインを追加
 ---
 
-<BaseLayout title={pageTitle}>
+<BaseLayout
+  title="ようこそ！My Astro Blogへ"
+  description="Astroとコンテンツコレクションで作るブログサイトのトップページです。"
+  ogImage={heroImage} {/* インポートした画像オブジェクトを渡す */}
+  ogType="website"
+>
 
   {/* Heroコンポーネントを呼び出し、Propsを渡す */}
   <Hero title={pageTitle} tagline={pageTagline} />

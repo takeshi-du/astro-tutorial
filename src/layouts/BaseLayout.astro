@@ -4,16 +4,87 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
-// Markdownファイルのフロントマターからデータを受け取る
-const { title } = Astro.props;
+import type { CollectionEntry } from 'astro:content'; // ブログ記事の場合など
+
+// ページから受け取るPropsの型定義
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string | ImageMetadata; // 画像パス(string) または importした画像メタデータ
+  ogType?: 'website' | 'article'; // ページタイプ (デフォルトは website)
+  // 必要に応じて他のPropsを追加 (例: publishedTime など)
+}
+
+// Propsを受け取り、デフォルト値を設定
+const {
+  title = 'サイトのデフォルトタイトル',
+  description = 'サイトのデフォルト説明文',
+  ogImage, // 画像データ or パス
+  ogType = 'website' // デフォルトは 'website'
+} = Astro.props;
+
+// サイトのベースURLを取得 (astro.config.mjs の site が必要)
+const siteUrl = Astro.site;
+if (!siteUrl) {
+  console.warn("astro.config.mjs の 'site' オプションが設定されていません。絶対URLが生成できません。");
+}
+
+// 現在ページの絶対URLを生成
+const pageUrl = siteUrl ? new URL(Astro.url.pathname, siteUrl).toString() : Astro.url.pathname;
+
+// OGP画像の絶対URLを生成
+let absoluteOgImageUrl: string | undefined = undefined;
+if (ogImage) {
+  if (typeof ogImage === 'string') {
+    // 文字列パスの場合 (例: '/images/default-ogp.png' や Markdownからの相対パス)
+    // siteUrl があれば絶対URLに、なければそのまま使う (相対パスは機能しない可能性あり)
+    absoluteOgImageUrl = siteUrl ? new URL(ogImage, siteUrl).toString() : ogImage;
+  } else if (typeof ogImage === 'object' && 'src' in ogImage) {
+    // import した画像メタデータの場合 (ImageMetadata)
+    // .src にはビルド後のパスが入るので、絶対URLにする
+    absoluteOgImageUrl = siteUrl ? new URL(ogImage.src, siteUrl).toString() : ogImage.src;
+  }
+} else {
+  // OGP画像が指定されなかった場合のデフォルト画像 (任意)
+  // 例: public/default-ogp.png を用意しておく
+   if (siteUrl) {
+     absoluteOgImageUrl = new URL('/default-ogp.png', siteUrl).toString();
+   }
+}
+
+// サイト固有の情報
+const siteName = "あなたのサイト名";
+const twitterHandle = "@your_twitter_handle"; // あなたのTwitterハンドル (任意)
 ---
 <!doctype html>
 <html lang="ja">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/astro-tutorial/favicon.svg" />
 		<title>{title ?? 'Astroチュートリアル'}</title>
+
+		{/* 基本的なメタタグ */}
+		<meta name="description" content={description} />
+
+		{/* OGPタグ (Facebook, etc.) */}
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={pageUrl} />
+		<meta property="og:site_name" content={siteName} />
+		{absoluteOgImageUrl && <meta property="og:image" content={absoluteOgImageUrl} />}
+		<meta property="og:type" content={ogType} />
+		{/* 必要ならロケールなども追加 <meta property="og:locale" content="ja_JP" /> */}
+	
+		{/* Twitterカードタグ */}
+		<meta name="twitter:card" content="summary_large_image" /> {/* 大きな画像付きカード */}
+		{twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{absoluteOgImageUrl && <meta name="twitter:image" content={absoluteOgImageUrl} />}
+	
+		{/* ページ固有のhead要素を追加するためのスロット (任意) */}
+		{/* <slot name="head" /> */}
 	</head>
 	<body>
 		<Header />

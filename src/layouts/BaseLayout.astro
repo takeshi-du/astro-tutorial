@@ -52,6 +52,41 @@ if (ogImage) {
    }
 }
 
+// サイト共通の構造化データを作成
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": title, // フロントマターで定義したサイト名変数
+  "url": siteUrl ? siteUrl.toString() : "/", // Astro.site から取得
+  // 必要に応じて "description" なども追加
+};
+// ページ固有の構造化データを生成 (例: ブログ記事の場合)
+let pageSchema = null;
+if (ogType === 'article' && Astro.props.pubDate) { // ogTypeが'article'で公開日がある場合など
+  pageSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting", // または Article など
+    "headline": title,
+    "description": description, // OGPと同じ説明文を使う場合
+    "image": absoluteOgImageUrl, // OGPと同じ画像URLを使う場合
+    "url": pageUrl, // 現在ページの絶対URL
+    "datePublished": new Date(Astro.props.pubDate).toISOString(), // 日付をISO形式に
+    // 必要に応じて "author", "publisher" なども追加
+    "author": { // 例
+      "@type": "Person", // または Organization
+      "name": "あなたの名前または組織名"
+    },
+    "publisher": { // 例
+      "@type": "Organization",
+      "name": siteName,
+      "logo": {
+        "@type": "ImageObject",
+        "url": siteUrl ? new URL('/logo-for-schema.png', siteUrl).toString() : '/logo-for-schema.png' // ロゴ画像URL (public/ に配置)
+      }
+    }
+  };
+}
+
 // サイト固有の情報
 const siteName = "あなたのサイト名";
 const twitterHandle = "@your_twitter_handle"; // あなたのTwitterハンドル (任意)
@@ -63,6 +98,13 @@ const twitterHandle = "@your_twitter_handle"; // あなたのTwitterハンドル
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/astro-tutorial/favicon.svg" />
 		<title>{title ?? 'Astroチュートリアル'}</title>
+
+		{/* ↓ サイト共通の構造化データを追加 */}
+		<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+		{/* ↓ ページ固有の構造化データを追加 (pageSchemaが存在する場合のみ) */}
+		{pageSchema && (
+			<script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+		)}
 
 		{/* 基本的なメタタグ */}
 		<meta name="description" content={description} />
